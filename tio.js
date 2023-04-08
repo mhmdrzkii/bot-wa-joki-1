@@ -361,15 +361,14 @@ tio.readMessages([m.key])
     //check sewa grup
     if (m.message && m.isGroup) {
       const sewa = JSON.parse(fs.readFileSync("./database/sewa.json"))
-      expiredCheck(tio, m.chat, sewa)
-      await sleep(1500)
-      await tio.groupLeave(m.chat)
-      // if (!checkSewaGrup(m.chat, sewa)) {
-      //   await tio.sendMessage(m.chat, {
-      //     text: `*Maaf, Grup Anda Tidak Terdaftar Dalam Database Kami!*`,
-      //   })
-
-      // }
+      console.log(checkSewaGrup(m.chat, sewa))
+      if (!checkSewaGrup(m.chat, sewa)) {
+        await tio.sendMessage(m.chat, {
+          text: `Maaf, sewa grup ini telah berakhir.\nSilahkan hubungi owner untuk memperpanjang sewa grup ini.`,
+        })
+        await sleep(1500)
+        await tio.groupLeave(m.chat)
+      }
     }
 
     // Response Addlist
